@@ -1,0 +1,30 @@
+# Same exclusions as .dockerignore — controls what gcloud uploads to Cloud Build
+.git/
+.gitignore
+.github/
+.claude/
+.env
+.env.local
+.env.*.local
+__pycache__/
+**/__pycache__/
+*.pyc
+.venv/
+venv/
+mrj_venv/
+models/
+data/uploads/
+media/
+test_keys.py
+setup_sam2.py
+start.bat
+start.sh
+.DS_Store
+Thumbs.db
+BACKUP-*/
+*.err.log
+*.out.log
+wronggriderror.png
+2time2gridcorrect.png
+grid\ kleuren\ error.png
+mr-jealousy-visualisatie-error.jpg
