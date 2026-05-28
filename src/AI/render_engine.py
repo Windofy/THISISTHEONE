@@ -38,9 +38,14 @@ STATE_MAP = {
         "by the blind, casting slat shadows."
     ),
     "Geheel uitgerold": (
-        "fully lowered, covering the entire window height from top to bottom. "
-        "The light entering the room is filtered through the slats, creating a "
-        "soft striped shadow pattern on the floor/interior."
+        "FULLY DEPLOYED — The blind is 100% lowered. "
+        "The bottom rail (onderlat / weight bar) rests directly on or within 1–2 cm of the windowsill. "
+        "The blind panel covers the COMPLETE window height: from the headrail at the very top "
+        "edge all the way down to the windowsill at the bottom — not a single centimeter of "
+        "window glass is exposed below the bottom rail. "
+        "Slats are horizontal and uniformly spaced across the full height. "
+        "CRITICAL: The blind is NOT partially raised, NOT bunched up at the bottom, NOT folded. "
+        "The full window — every centimeter from top to bottom — is covered by evenly-spaced horizontal slats."
     ),
 }
 
@@ -154,6 +159,31 @@ def _build_prompt(config: dict, state: str, mounting: Optional[str], extra_optio
         if extra_options.get("slatWidth")
         else "with horizontal slats"
     )
+
+    if extra_options.get("ladderTape"):
+        tape_constraint = (
+            "      **CRITICAL CONSTRAINT: LADDER TAPE (LADDERTAPE) — MANDATORY**\n"
+            "      This blind uses LADDER TAPE, not string cords.\n"
+            "      - Wide fabric strips run VERTICALLY along the full height of the blind panel.\n"
+            "      - Clearly visible, prominent decorative element — NOT thin cords.\n"
+            "      - DO NOT substitute with string cords or invisible hardware."
+        )
+    else:
+        tape_constraint = (
+            "      **CRITICAL CONSTRAINT: STRING CORDS (LADDERKOORD) — NO FABRIC TAPES**\n"
+            "      This blind uses minimalist string cords only.\n"
+            "      - Thin, nearly invisible cords hold the slats — NO wide fabric strips.\n"
+            "      - DO NOT add decorative ladder tapes."
+        )
+
+    slat_width = extra_options.get("slatWidth", "")
+    slat_constraint = (
+        f"      **CRITICAL CONSTRAINT: SLAT WIDTH — EXACTLY {slat_width}**\n"
+        f"      Each individual slat is exactly {slat_width} wide.\n"
+        f"      - Hard product specification — not approximate, not artistic.\n"
+        f"      - The total number of slats filling the window height is determined by this exact width."
+    ) if slat_width else ""
+
     return f"""
       **TASK**: Create an Ultra-Photorealistic Window Treatment Visualization.
 
@@ -161,6 +191,16 @@ def _build_prompt(config: dict, state: str, mounting: Optional[str], extra_optio
       - **DO NOT** change the color of the existing window frames, walls, floor, or furniture.
       - **DO NOT** repaint the room.
       - **ONLY** insert the new blind object.
+
+      **CRITICAL CONSTRAINT: DEPLOYMENT STATE — NON-NEGOTIABLE**
+      The blind MUST be rendered in this exact physical state: {english_state}
+      - The bottom rail MUST rest on or within 1–2 cm of the windowsill — NO floating allowed.
+      - The blind MUST span 100% of window height: from headrail (top bracket) down to windowsill (bottom edge).
+      - NO glass is visible below the bottom rail when fully deployed.
+      - This constraint overrides any aesthetic, compositional, or stylistic preference.
+
+{tape_constraint}
+{slat_constraint}
 
       **STEP 1: VIRTUAL DEMOLITION (PRE-PROCESSING)**
       - Identify the window area accurately.
@@ -182,6 +222,13 @@ def _build_prompt(config: dict, state: str, mounting: Optional[str], extra_optio
       - **RAYTRACING**: Render realistic slat shadows on the floor/furniture.
       - **REFLECTIONS**: If Aluminium, show subtle room reflections on the slats. If Wood, show texture.
       - **INTEGRATION**: The blind must match the room's perspective vanishing point perfectly.
+
+      **STEP 5: NEGATIVE CONSTRAINTS — NEVER DO ANY OF THE FOLLOWING**
+      - NEVER render the blind partially raised or only covering part of the window height.
+      - NEVER show uncovered glass BELOW the bottom rail when state is fully deployed.
+      - NEVER bunch, fold, or compress slats at the bottom of the window.
+      - NEVER show the bottom rail floating above the windowsill with visible glass below it.
+      - NEVER override the CRITICAL CONSTRAINT: DEPLOYMENT STATE for aesthetic or compositional reasons.
     """.strip()
 
 
@@ -239,7 +286,10 @@ def _render_beta(img_bytes: bytes, mime: str, prompt: str) -> str:
         "Photorealistic interior room photo. Add venetian window blinds at the window. "
         "Preserve all walls, floor, furniture, ceiling exactly as-is. "
         "Only modify the window area to insert the blind. "
-        + prompt[:600]
+        "CRITICAL: The blind MUST be FULLY DEPLOYED — bottom rail rests ON the windowsill, "
+        "covering the COMPLETE window height from top to bottom. "
+        "NEVER show partially raised blinds. NEVER show the bottom rail floating above the sill. "
+        + prompt[:1500]
     )
 
     payload = json.dumps({

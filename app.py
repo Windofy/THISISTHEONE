@@ -18,6 +18,8 @@ from pathlib import Path
 import io
 from flask import Flask, request, jsonify, send_from_directory, send_file, render_template_string
 from flask_cors import CORS
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from dotenv import load_dotenv
 
 load_dotenv(".env.local", override=True)
@@ -49,7 +51,15 @@ from src.AI.warp_blind import (
 # ── APP SETUP ───────────────────────────────────────────────────
 
 app = Flask(__name__, static_folder="static", static_url_path="")
+app.config["MAX_CONTENT_LENGTH"] = 20 * 1024 * 1024  # 20 MB max upload
 CORS(app)
+
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    default_limits=[],
+    storage_uri="memory://",
+)
 
 
 # ── STATIC / INDEX ───────────────────────────────────────────────
@@ -68,6 +78,7 @@ def favicon():
 # ── PHASE 1-8: ANALYZE ──────────────────────────────────────────
 
 @app.route("/analyze", methods=["POST"])
+@limiter.limit("15 per hour")
 def analyze():
     """
     Receive a base64 image, upload it, and run the 9-phase analysis pipeline.
@@ -100,11 +111,13 @@ def analyze():
 # ── PHASE 9: RENDER (procedural blind + SAM2 mask + perspective warp) ──
 
 @app.route("/render", methods=["POST"])
+@limiter.limit("30 per hour")
 def render():
     return _do_render()
 
 
 @app.route("/preview", methods=["POST"])
+@limiter.limit("30 per hour")
 def preview():
     return _do_render()
 

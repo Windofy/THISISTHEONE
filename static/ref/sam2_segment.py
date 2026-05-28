@@ -10,7 +10,13 @@ import sys
 import base64
 import io
 from pathlib import Path
-from typing import Optional
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    # type-checkers / linters may not have torch available in all envs;
+    # this avoids spurious "could not be resolved" errors while keeping
+    # runtime imports lazy inside get_sam2_predictor().
+    from torch import Tensor  # noqa: F401  # type: ignore[reportMissingImports]
 
 import numpy as np
 from PIL import Image, ImageDraw
@@ -31,9 +37,9 @@ def get_sam2_predictor():
         return _PREDICTOR
 
     try:
-        import torch
-        from sam2.build_sam import build_sam2
-        from sam2.sam2_image_predictor import SAM2ImagePredictor
+        import torch  # type: ignore[reportMissingImports]
+        from sam2.build_sam import build_sam2  # type: ignore[reportMissingImports]
+        from sam2.sam2_image_predictor import SAM2ImagePredictor  # type: ignore[reportMissingImports]
     except ImportError as exc:
         raise RuntimeError(f"SAM2 not installed: {exc}")
 

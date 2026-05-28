@@ -152,16 +152,23 @@ def _phase_2_quality(client, image_b64, image_mime) -> Dict[str, Any]:
     system = core.get_phase_prompt(2)
     user   = (
         "Voer de kwaliteits- en compliancecheck uit op deze afbeelding. "
-        "Geef je antwoord als geldig JSON object met de volgende structuur:\n"
-        '{"passed": true/false, "feedback": "feedback tekst als failed, anders leeg string"}'
+        "KRITIEKE REGEL: Zichtbare raambekleding (jaloezieën, gordijnen, shutters, rolgordijnen, etc.) "
+        "is NOOIT een reden om passed=false te retourneren. De render-stap verwijdert die automatisch. "
+        "Zet in dat geval alleen existing_treatment_detected=true. "
+        "Zet passed=false ALLEEN bij echte kwaliteitsproblemen: extreme onscherpte, totale duisternis, "
+        "verkeerd formaat, aanstootgevende inhoud, of extreme rotatie. "
+        "Geef je antwoord als geldig JSON object:\n"
+        '{"passed": true/false, "feedback": "feedback tekst als failed, anders leeg string", '
+        '"existing_treatment_detected": true/false}'
     )
     # Sonnet is voldoende voor deze binaire ja/nee check — sneller dan Opus.
     raw    = _call_claude_vision(client, system, image_b64, image_mime, user,
                                  model=core.FALLBACK_MODEL)
     result = _parse_json(raw, phase=2)
     return {
-        "passed":   bool(result.get("passed", False)),
-        "feedback": result.get("feedback", ""),
+        "passed":                      bool(result.get("passed", False)),
+        "feedback":                    result.get("feedback", ""),
+        "existing_treatment_detected": bool(result.get("existing_treatment_detected", False)),
     }
 
 
