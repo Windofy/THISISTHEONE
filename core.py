@@ -172,7 +172,7 @@ MR_JEALOUSY_CATALOG: Dict[str, List[ProductColor]] = {
         {"name": "Flat White",      "hex": "#FFFAF0", "material": "Hout", "sampleUrl": "https://storage.googleapis.com/mrjealousy/COLOR%20SAMPLES/Flat-White.png"},
         {"name": "Gebroken White",  "hex": "#FDF5E6", "material": "Hout", "sampleUrl": "https://storage.googleapis.com/mrjealousy/COLOR%20SAMPLES/Gebroken-White.png"},
         {"name": "Haver Milk",      "hex": "#EFEBD8", "material": "Hout", "sampleUrl": "https://storage.googleapis.com/mrjealousy/COLOR%20SAMPLES/Haver-Milk.png"},
-        {"name": "Smokey Bamboo",   "hex": "#4A4A4A", "material": "Hout", "sampleUrl": "https://storage.googleapis.com/mrjealousy/HOUTEN%20JALOEZIE/SMOKEY%20BAMBOO/BAMBOE-JALOEZIE_5077_GRANITE_0fc56d7f-.jpeg"},
+        {"name": "Smokey Bamboo",   "hex": "#4A4A4A", "material": "Hout", "sampleUrl": "https://storage.googleapis.com/mrjealousy/HOUTEN%20JALOEZIE/SMOKEY%20BAMBOO/BAMBOE-JALOEZIE_5077_GRANITE_a78919d8-1082.jpeg"},
         {"name": "Deep Zwart",      "hex": "#080808", "material": "Hout", "sampleUrl": "https://storage.googleapis.com/mrjealousy/HOUTEN%20JALOEZIE/DEEP%20ZWART/HOUTEN-JALOEZIE_BLACK_04686c36-330d-4935-.jpeg"},
     ],
 }
@@ -385,13 +385,13 @@ PHASE_LAWS: Dict[int, Dict[str, Any]] = {
             "Check: Image Size — the image must be within the accepted size limits.",
             "Check: Unwanted content — no explicit, offensive, or unrelated content.",
             "Check: Format — the image must be PNG, JPG, or WEBP.",
-            "Check: Window accessibility — if the window is substantially covered by existing window "
-            "treatments (blinds, venetian blinds, shutters, curtains, roller blinds, etc.) that block "
-            "the glass area, the image FAILS this check. The glass and window frame must be clearly "
-            "visible so the visualization can work. Feedback: ask the user to open or remove the "
-            "existing window treatment and retake the photo, or to take a photo of the bare window.",
-            "If any check fails: return an error message with specific feedback on what to improve.",
-            "If all checks pass: proceed to Phase 3.",
+            "NEVER fail (passed=false) because existing window treatments are visible in the photo. "
+            "Existing blinds, curtains, shutters, or other window coverings are fully acceptable — "
+            "the render step removes them automatically. Only set passed=false for real image quality "
+            "problems (extreme blur, total darkness, wrong format, explicit content, rotated 90°+). "
+            "Always set 'existing_treatment_detected': true when treatments are visible.",
+            "If any of the quality checks above fail: set passed=false with specific feedback.",
+            "If all quality checks pass (regardless of window treatments): set passed=true.",
         ],
         "negative_seeds": [],  # TODO: populate in next session
     },
