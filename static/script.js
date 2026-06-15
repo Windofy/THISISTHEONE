@@ -222,8 +222,8 @@ async function handleFile(file) {
     alert('Gebruik een afbeeldingsbestand (PNG, JPG, WEBP, HEIC, enz.).');
     return;
   }
-  if (file.size > 4 * 1024 * 1024) {
-    alert('De afbeelding is te groot. Maximaal 4MB toegestaan.');
+  if (file.size > 20 * 1024 * 1024) {
+    alert('De afbeelding is te groot. Maximaal 20MB toegestaan.');
     return;
   }
 
@@ -498,9 +498,10 @@ function renderSuggestions(suggestions) {
     card.innerHTML = `
       <img class="suggestion-thumb"
            src="${escHtml(color.textureUrl || color.sampleUrl)}"
-           alt="${escHtml(color.name)}"
+           alt=""
            data-fb="${escHtml(color.sampleUrl || '')}"
-           onerror="if(this.dataset.fb&&this.src!==this.dataset.fb){this.src=this.dataset.fb}else{this.onerror=null;this.style.background='var(--pink-light)'}"
+           data-hex="${escHtml(color.hex || '')}"
+           onerror="if(this.dataset.fb&&this.src!==this.dataset.fb){this.src=this.dataset.fb}else{this.onerror=null;this.style.display='none';this.parentElement.style.background=this.dataset.hex||'var(--pink-light)'}"
       />
       <div class="suggestion-info">
         <div class="suggestion-name">${escHtml(color.name)}</div>
@@ -532,6 +533,7 @@ function selectColor(color) {
   const isProductPhoto = /JALOEZIE.*\.(jpe?g)$/i.test(imgSrc);
   heroImg.classList.toggle('hero-img--product', isProductPhoto);
 
+  updateOptionConstraints();
   generatePreview();
 }
 
@@ -652,9 +654,10 @@ function renderFlyoutList() {
       <div class="flyout-thumb-wrap">
         <img class="flyout-thumb"
              src="${escHtml(color.textureUrl || color.sampleUrl)}"
-             alt="${escHtml(color.name)}"
+             alt=""
              data-fb="${escHtml(color.sampleUrl || '')}"
-             onerror="if(this.dataset.fb&&this.src!==this.dataset.fb){this.src=this.dataset.fb}else{this.onerror=null;this.parentElement.style.background='var(--pink-light)'}"
+             data-hex="${escHtml(color.hex || '')}"
+             onerror="if(this.dataset.fb&&this.src!==this.dataset.fb){this.src=this.dataset.fb}else{this.onerror=null;this.style.display='none';this.parentElement.style.background=this.dataset.hex||'var(--pink-light)'}"
         />
       </div>
       <div class="flyout-info">
@@ -826,6 +829,61 @@ async function generatePreview() {
   }
 }
 
+// ── OPTION CONSTRAINTS ─────────────────────────────────────────
+// Enforces product-level rules after every color selection or option change.
+// Rules:
+//   1. 25mm slats are only available for Aluminium — disable for Hout.
+//   2. Aluminium 25mm + Ladderband is technically impossible — force Ladderkoord.
+
+let _toastTimer = null;
+
+function showConstraintToast(msg) {
+  const el = document.getElementById('constraint-toast');
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.add('visible');
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => el.classList.remove('visible'), 3500);
+}
+
+function _setRadioSelected(groupId, value) {
+  const group = document.getElementById(groupId);
+  if (!group) return;
+  group.querySelectorAll('.radio-item').forEach(item => {
+    item.classList.toggle('selected', item.dataset.value === value);
+  });
+}
+
+function updateOptionConstraints() {
+  const isHout = APP.selectedColor &&
+    (APP.selectedColor.productType === 'Houten Jaloezieën' ||
+     (APP.selectedColor.material || '').toLowerCase() === 'hout');
+
+  const lamelGroup  = document.getElementById('rg-lamel');
+  const ladderGroup = document.getElementById('rg-ladder');
+  if (!lamelGroup || !ladderGroup) return;
+
+  const item25mm = lamelGroup.querySelector('[data-value="25mm"]');
+
+  if (isHout) {
+    // 25mm unavailable for wood — disable option and force 50mm
+    if (item25mm) item25mm.classList.add('disabled');
+    if (getSelected('rg-lamel') === '25mm') {
+      _setRadioSelected('rg-lamel', '50mm');
+      showConstraintToast('25mm lamel is niet beschikbaar voor Houten Jaloezieën. Omgezet naar 50mm.');
+    }
+  } else {
+    // Aluminium — re-enable 25mm
+    if (item25mm) item25mm.classList.remove('disabled');
+
+    // Block: Aluminium 25mm + Ladderband
+    if (getSelected('rg-lamel') === '25mm' && getSelected('rg-ladder') === 'Ladderband') {
+      _setRadioSelected('rg-ladder', 'Ladderkoord');
+      showConstraintToast('Ladderband is niet mogelijk bij 25mm lamellen. Omgezet naar Ladderkoord.');
+    }
+  }
+}
+
 // ── UTILITY ────────────────────────────────────────────────────
 
 function sleep(ms) {
@@ -859,7 +917,10 @@ document.addEventListener('DOMContentLoaded', () => {
   ['rg-ladder', 'rg-lamel'].forEach(groupId => {
     document.getElementById(groupId)
       ?.querySelectorAll('.radio-item')
-      .forEach(item => item.addEventListener('click', debouncedPreview));
+      .forEach(item => item.addEventListener('click', () => {
+        updateOptionConstraints();
+        debouncedPreview();
+      }));
   });
 
   // Flyout material toggle

@@ -123,6 +123,13 @@ def _draw_closed_slats(draw, width_px, y_top, y_bot, slat_w_mm, px_per_mm, rgb):
     n_div    = max(1, int((y_bot - y_top) / pitch_px))
     line_col = _darken(rgb, 0.82)
 
+    # Skip division lines that would be too close together to be visible (< 2px apart).
+    # This prevents muddy, smeared output at 25mm slats on smaller render windows.
+    min_spacing_px = 2
+    actual_spacing = (y_bot - y_top) / max(1, n_div)
+    if actual_spacing < min_spacing_px:
+        return
+
     for i in range(1, n_div):
         y = y_top + int(i * (y_bot - y_top) / n_div)
         draw.line([(0, y), (width_px, y)], fill=(*line_col, 255), width=1)

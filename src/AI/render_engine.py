@@ -149,11 +149,17 @@ def _build_prompt(config: dict, state: str, mounting: Optional[str], extra_optio
         if extra_options.get("ladderTape")
         else "with minimalist string cords (no wide fabric tapes)"
     )
-    slat_desc = (
-        f"with {extra_options['slatWidth']} wide horizontal slats"
-        if extra_options.get("slatWidth")
-        else "with horizontal slats"
-    )
+    _slat_w = extra_options.get("slatWidth", "")
+    if _slat_w == "25mm":
+        slat_desc = (
+            "with fine 25mm micro-slats — render with very high horizontal stripe density "
+            "(approximately twice as many slats as standard 50mm blinds). "
+            "Each individual slat must be visibly thin and crisp."
+        )
+    elif _slat_w:
+        slat_desc = f"with {_slat_w} wide horizontal slats"
+    else:
+        slat_desc = "with horizontal slats"
     return f"""
       **TASK**: Create an Ultra-Photorealistic Window Treatment Visualization.
 

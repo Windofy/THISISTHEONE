@@ -150,10 +150,13 @@ MR_JEALOUSY_CATALOG: Dict[str, List[ProductColor]] = {
         {"name": "Juicy Olive",       "hex": "#808000", "material": "Aluminium", "sampleUrl": "https://storage.googleapis.com/mrjealousy/COLOR%20SAMPLES/Juicy-Olive%20A.png"},
         {"name": "Koel Blue",         "hex": "#AEC6CF", "material": "Aluminium", "sampleUrl": "https://storage.googleapis.com/mrjealousy/COLOR%20SAMPLES/Koel-Blue%20A.png"},
         {"name": "Like RAL9001",      "hex": "#FDF4E3", "material": "Aluminium", "sampleUrl": "https://storage.googleapis.com/mrjealousy/COLOR%20SAMPLES/Like-RAL9001%20A.png"},
+        {"name": "Like RAL9016",      "hex": "#F0F8FF", "material": "Aluminium", "sampleUrl": "https://storage.googleapis.com/mrjealousy/COLOR%20SAMPLES/Like-RAL9016%20A.png"},
+        {"name": "Aubergine",         "hex": "#5D0A6D", "material": "Aluminium", "sampleUrl": "https://storage.googleapis.com/mrjealousy/COLOR%20SAMPLES/Naughty-Aubergine%20A.png"},
         {"name": "Cowboy Koper",      "hex": "#8B4513", "material": "Aluminium", "sampleUrl": "https://storage.googleapis.com/mrjealousy/ALUMINIUM%20JALOEZIE/COWBOY%20KOPER/ALU_7381_Cowboy-Koper_BRUSHED_DA.jpeg"},
     ],
     "Houten Jaloezieën": [
         {"name": "Like RAL9016",    "hex": "#F0F8FF", "material": "Hout", "sampleUrl": "https://storage.googleapis.com/mrjealousy/COLOR%20SAMPLES/Like-RAL9016%20A.png"},
+        {"name": "Miss Clay",       "hex": "#B07060", "material": "Hout", "sampleUrl": "https://storage.googleapis.com/mrjealousy/HOUTEN%20JALOEZIE/MISS%20CLAY/HOUTENJALOEZIEMISSCLAY.png"},
         {"name": "Mister Sandman",  "hex": "#C2B280", "material": "Hout", "sampleUrl": "https://storage.googleapis.com/mrjealousy/COLOR%20SAMPLES/Mister-Sandman.png"},
         {"name": "Misty Bamboo",    "hex": "#DCC098", "material": "Hout", "sampleUrl": "https://storage.googleapis.com/mrjealousy/COLOR%20SAMPLES/Misty-Bamboo.png"},
         {"name": "Oak Mooi",        "hex": "#C3A376", "material": "Hout", "sampleUrl": "https://storage.googleapis.com/mrjealousy/COLOR%20SAMPLES/Oak-Mooi.png"},
