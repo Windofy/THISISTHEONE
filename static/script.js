@@ -53,7 +53,6 @@ const MR_JEALOUSY_CATALOG = {
     { name: 'Cowboy Koper',      hex: '#8B4513', material: 'Aluminium', sampleUrl: 'https://storage.googleapis.com/mrjealousy/ALUMINIUM%20JALOEZIE/COWBOY%20KOPER/ALU_7381_Cowboy-Koper_BRUSHED_DA.jpeg', textureUrl: _ALU('ALU_7381_Cowboy-Koper.png') },
   ],
   'Houten Jaloezieën': [
-    { name: 'Like RAL9016',    hex: '#F0F8FF', material: 'Hout', sampleUrl: 'https://storage.googleapis.com/mrjealousy/COLOR%20SAMPLES/Like-RAL9016%20A.png' },
     { name: 'Mister Sandman',  hex: '#C2B280', material: 'Hout', sampleUrl: 'https://storage.googleapis.com/mrjealousy/COLOR%20SAMPLES/Mister-Sandman.png',        textureUrl: _HOUT('HOUTENJALOEZIESAND.png') },
     { name: 'Miss Clay',       hex: '#B07060', material: 'Hout', sampleUrl: _HOUT('HOUTENJALOEZIEMISSCLAY.png'),                                                    textureUrl: _HOUT('HOUTENJALOEZIEMISSCLAY.png') },
     { name: 'Misty Bamboo',    hex: '#DCC098', material: 'Hout', sampleUrl: 'https://storage.googleapis.com/mrjealousy/COLOR%20SAMPLES/Misty-Bamboo.png',           textureUrl: _HOUT('BAMBOEJALOEZIEMISTYBAMBOO.png') },
@@ -743,7 +742,7 @@ async function _fetchPreviewImage() {
     slatWidth:  getSelected('rg-lamel'),
   };
   const mounting = APP.analysisResult?.windowCheck?.recommendation || 'in de dag';
-  const resp = await fetch('/preview', {
+  const resp = await fetch('/render', {
     method:  'POST',
     headers: { 'Content-Type': 'application/json' },
     body:    JSON.stringify({
@@ -793,7 +792,7 @@ async function generatePreview() {
   const state    = 'Geheel uitgerold';
 
   try {
-    const resp = await fetch('/preview', {
+    const resp = await fetch('/render', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

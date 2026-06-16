@@ -27,6 +27,10 @@ models/                  # SAM2 .pt (~900 MB) — lazy-download in production
 data/uploads/            # user uploads
 media/                   # design references (Figma exports)
 
+# Temp / runtime
+tmp/
+server-cmd.log
+
 # Dev-only files
 test_keys.py
 setup_sam2.py

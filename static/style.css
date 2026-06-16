@@ -485,8 +485,8 @@ img {
   flex-direction: row;
   overflow: hidden;
   min-height: 0;
-  padding: 16px;
-  gap: 16px;
+  padding: 12px;
+  gap: 12px;
 }
 
 /* Left panel: before/after */
@@ -566,18 +566,19 @@ img {
 /* Before / After labels */
 .ba-label {
   position: absolute;
-  bottom: 14px;
+  top: 14px;
+  bottom: unset;
   z-index: 5;
   background: rgba(255, 255, 255, 0.45);
   backdrop-filter: blur(14px) saturate(160%);
   -webkit-backdrop-filter: blur(14px) saturate(160%);
   color: var(--text-dark);
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  padding: 5px 11px;
+  padding: 3px 8px;
   border-radius: 999px;
   pointer-events: none;
   border: 1px solid rgba(255, 255, 255, 0.55);
@@ -589,7 +590,8 @@ img {
 }
 
 .ba-label--after {
-  right: 14px;
+  /* offset left to avoid overlapping the watermark (80px wide at right:14px) */
+  right: 110px;
 }
 
 /* Windofy watermark — rechtsboven op het visualisatieresultaat */
@@ -616,6 +618,23 @@ img {
   border-top: 1px solid rgba(255, 255, 255, 0.45);
 }
 
+/* Overlay action bar onto image — frees the image to fill 100% of result-left */
+.result-left > .result-actions {
+  display: flex;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 6;
+  padding: 6px 12px;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border-top: 1px solid rgba(255, 255, 255, 0.30);
+  justify-content: flex-end;
+}
+
 .btn-outline {
   flex: 1;
   display: flex;
@@ -637,9 +656,25 @@ img {
   color: white;
 }
 
+/* Micro pill buttons inside the image overlay — subordinate to the image */
+.result-left > .result-actions .btn-outline {
+  flex: none;
+  padding: 11px 16px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.75);
+  color: var(--text-dark);
+}
+
+.result-left > .result-actions .btn-outline:hover {
+  background: var(--text-dark);
+  color: white;
+}
+
 /* Right panel: config */
 .result-right {
-  width: 420px;
+  width: 280px;
   flex-shrink: 0;
   background: #FFFFFF;
   overflow-y: auto;
@@ -1122,6 +1157,7 @@ img {
 .flyout-item {
   width: 100%;
   min-width: 0;
+  min-height: 150px;
   display: flex;
   flex-direction: column;
   padding: 0;
@@ -1196,7 +1232,6 @@ img {
     padding: 10px 12px 20px;
   }
 }
-
 
 /* Material toggle — segmented pill, strict separation */
 .mat-toggle {
@@ -1508,7 +1543,7 @@ img {
 
 @media (min-width: 769px) and (max-width: 1199px) {
   .result-right {
-    width: 340px;
+    width: 240px;
   }
 
   .landing-content {
@@ -1534,7 +1569,7 @@ img {
   }
 
   .result-right {
-    width: 460px;
+    width: 300px;
   }
 
   .flyout-panel {
@@ -1619,8 +1654,7 @@ img {
 
   .result-left {
     flex: none;
-    height: 56vw;
-    min-height: 220px;
+    height: clamp(340px, 58vh, 520px);
   }
 
   .result-right {
