@@ -298,8 +298,10 @@ async function renderVisualization() {
   APP.renderBusy = true;
 
   showRenderLoader();
-  const btn = document.getElementById('btn-visualiseer');
+  const btn    = document.getElementById('btn-visualiseer');
+  const btnTop = document.getElementById('btn-visualiseer-top');
   btn.disabled = true;
+  if (btnTop) btnTop.disabled = true;
 
   const config = _buildConfig();
 
@@ -339,6 +341,7 @@ async function renderVisualization() {
   } finally {
     APP.renderBusy = false;
     btn.disabled = false;
+    if (btnTop) btnTop.disabled = false;
   }
 }
 
@@ -968,8 +971,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target === document.getElementById('flyout-overlay')) closeFlyout();
   });
 
-  // Visualiseer button (single button)
+  // Visualiseer buttons (bottom + top shortcut)
   document.getElementById('btn-visualiseer').addEventListener('click', renderVisualization);
+  document.getElementById('btn-visualiseer-top')?.addEventListener('click', renderVisualization);
 
   // Opnieuw & Opslaan
   document.getElementById('btn-opnieuw').addEventListener('click', goToLanding);

@@ -726,6 +726,25 @@ img {
 .config-section--cta-top    { border-bottom: none; padding-top: 4px; padding-bottom: 4px; }
 .config-section--cta-bottom { border-bottom: none; padding-top: 4px; }
 
+.config-section-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 0 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-mid, #888);
+}
+.config-section-divider::before,
+.config-section-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.12);
+}
+
 .color-cta-links--spaced { margin-top: 14px; }
 
 .section-label {
