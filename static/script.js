@@ -296,13 +296,7 @@ async function renderVisualization() {
   const btn = document.getElementById('btn-visualiseer');
   btn.disabled = true;
 
-  const config = {
-    productType:  APP.selectedColor.productType,
-    material:     APP.selectedColor.material,
-    colorName:    APP.selectedColor.name,
-    colorHex:     APP.selectedColor.hex,
-    sampleUrl:    APP.selectedColor.sampleUrl || '',
-  };
+  const config = _buildConfig();
 
   const extraOptions = {
     lighting:   getSelected('rg-dagdeel'),
@@ -532,6 +526,14 @@ function selectColor(color) {
   const isProductPhoto = /JALOEZIE.*\.(jpe?g)$/i.test(imgSrc);
   heroImg.classList.toggle('hero-img--product', isProductPhoto);
 
+  // Sync the config panel material toggle to match the selected color
+  const matValue = color.productType || (
+    (color.material || '').toLowerCase() === 'hout'
+      ? 'Houten Jaloezieën'
+      : 'Aluminium Jaloezieën'
+  );
+  _setRadioSelected('mat-toggle-config', matValue);
+
   updateOptionConstraints();
   generatePreview();
 }
@@ -606,6 +608,21 @@ function initSlider() {
 
   window.addEventListener('mouseup',   () => { isDraggingSlider = false; });
   window.addEventListener('touchend',  () => { isDraggingSlider = false; });
+}
+
+// ── CONFIG BUILDER ─────────────────────────────────────────────
+// Material is driven by the config-panel toggle, not the stored color object.
+// This lets the visitor switch Alu ↔ Hout without re-picking a color.
+
+function _buildConfig() {
+  const matToggle = getSelected('mat-toggle-config') || 'Aluminium Jaloezieën';
+  return {
+    productType: matToggle,
+    material:    matToggle === 'Houten Jaloezieën' ? 'Hout' : 'Aluminium',
+    colorName:   APP.selectedColor.name,
+    colorHex:    APP.selectedColor.hex,
+    sampleUrl:   APP.selectedColor.sampleUrl || '',
+  };
 }
 
 // ── RADIO GROUPS ───────────────────────────────────────────────
@@ -729,13 +746,7 @@ function saveResult() {
 
 async function _fetchPreviewImage() {
   if (!APP.selectedColor || !APP.uploadedImageBase64) return null;
-  const config = {
-    productType: APP.selectedColor.productType,
-    material:    APP.selectedColor.material,
-    colorName:   APP.selectedColor.name,
-    colorHex:    APP.selectedColor.hex,
-    sampleUrl:   APP.selectedColor.sampleUrl || '',
-  };
+  const config = _buildConfig();
   const extraOptions = {
     lighting:   getSelected('rg-dagdeel'),
     ladderTape: getSelected('rg-ladder') === 'Ladderband',
@@ -774,13 +785,7 @@ async function generatePreview() {
 
   // Preview is een stille achtergrondoperatie — geen zichtbare loader.
 
-  const config = {
-    productType:  APP.selectedColor.productType,
-    material:     APP.selectedColor.material,
-    colorName:    APP.selectedColor.name,
-    colorHex:     APP.selectedColor.hex,
-    sampleUrl:    APP.selectedColor.sampleUrl || '',
-  };
+  const config = _buildConfig();
 
   const extraOptions = {
     lighting:   getSelected('rg-dagdeel'),
@@ -855,9 +860,13 @@ function _setRadioSelected(groupId, value) {
 }
 
 function updateOptionConstraints() {
-  const isHout = APP.selectedColor &&
-    (APP.selectedColor.productType === 'Houten Jaloezieën' ||
-     (APP.selectedColor.material || '').toLowerCase() === 'hout');
+  const matToggle = document.getElementById('mat-toggle-config');
+  const isHout = matToggle
+    ? getSelected('mat-toggle-config') === 'Houten Jaloezieën'
+    : !!(APP.selectedColor && (
+        APP.selectedColor.productType === 'Houten Jaloezieën' ||
+        (APP.selectedColor.material || '').toLowerCase() === 'hout'
+      ));
 
   const lamelGroup  = document.getElementById('rg-lamel');
   const ladderGroup = document.getElementById('rg-ladder');
@@ -918,11 +927,11 @@ document.addEventListener('DOMContentLoaded', () => {
   initSlider();
 
   // Radio groups
-  ['rg-ladder', 'rg-lamel', 'rg-dagdeel'].forEach(initRadioGroup);
+  ['rg-ladder', 'rg-lamel', 'rg-dagdeel', 'mat-toggle-config'].forEach(initRadioGroup);
 
-  // Live preview update on option change (ladder, slat width) with debounce
+  // Live preview update on option change (ladder, slat width, material) with debounce
   const debouncedPreview = debounce(generatePreview, 400);
-  ['rg-ladder', 'rg-lamel'].forEach(groupId => {
+  ['rg-ladder', 'rg-lamel', 'mat-toggle-config'].forEach(groupId => {
     document.getElementById(groupId)
       ?.querySelectorAll('.radio-item')
       .forEach(item => item.addEventListener('click', () => {
