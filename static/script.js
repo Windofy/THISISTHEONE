@@ -53,6 +53,7 @@ const MR_JEALOUSY_CATALOG = {
     { name: 'Cowboy Koper',      hex: '#8B4513', material: 'Aluminium', sampleUrl: 'https://storage.googleapis.com/mrjealousy/ALUMINIUM%20JALOEZIE/COWBOY%20KOPER/ALU_7381_Cowboy-Koper_BRUSHED_DA.jpeg', textureUrl: _ALU('ALU_7381_Cowboy-Koper.png') },
   ],
   'Houten Jaloezieën': [
+    { name: 'Like RAL9016',    hex: '#F0F8FF', material: 'Hout', sampleUrl: 'https://storage.googleapis.com/mrjealousy/COLOR%20SAMPLES/Like-RAL9016%20A.png',       textureUrl: 'https://storage.googleapis.com/mrjealousy/COLOR%20SAMPLES/Like-RAL9016%20A.png' },
     { name: 'Mister Sandman',  hex: '#C2B280', material: 'Hout', sampleUrl: 'https://storage.googleapis.com/mrjealousy/COLOR%20SAMPLES/Mister-Sandman.png',        textureUrl: _HOUT('HOUTENJALOEZIESAND.png') },
     { name: 'Miss Clay',       hex: '#B07060', material: 'Hout', sampleUrl: _HOUT('HOUTENJALOEZIEMISSCLAY.png'),                                                    textureUrl: _HOUT('HOUTENJALOEZIEMISSCLAY.png') },
     { name: 'Misty Bamboo',    hex: '#DCC098', material: 'Hout', sampleUrl: 'https://storage.googleapis.com/mrjealousy/COLOR%20SAMPLES/Misty-Bamboo.png',           textureUrl: _HOUT('BAMBOEJALOEZIEMISTYBAMBOO.png') },
@@ -72,7 +73,7 @@ const MR_JEALOUSY_CATALOG = {
     { name: 'Flat White',      hex: '#FFFAF0', material: 'Hout', sampleUrl: 'https://storage.googleapis.com/mrjealousy/COLOR%20SAMPLES/Flat-White.png',             textureUrl: _HOUT('HOUTENJALOEZIEWHITE.png') },
     { name: 'Gebroken White',  hex: '#FDF5E6', material: 'Hout', sampleUrl: 'https://storage.googleapis.com/mrjealousy/COLOR%20SAMPLES/Gebroken-White.png',         textureUrl: _HOUT('HOUTENJALOEZIEGEBROKENWHITE.png') },
     { name: 'Haver Milk',      hex: '#EFEBD8', material: 'Hout', sampleUrl: 'https://storage.googleapis.com/mrjealousy/COLOR%20SAMPLES/Haver-Milk.png',             textureUrl: _HOUT('BAMBOEJALOEZIEHAVERMILKMRJEALOUSY.png') },
-    { name: 'Smokey Bamboo',   hex: '#4A4A4A', material: 'Hout', sampleUrl: 'https://storage.googleapis.com/mrjealousy/HOUTEN%20JALOEZIE/SMOKEY%20BAMBOO/BAMBOE-JALOEZIE_5077_GRANITE_a78919d8-1082.jpeg' },
+    { name: 'Smokey Bamboo',   hex: '#4A4A4A', material: 'Hout', sampleUrl: 'https://storage.googleapis.com/mrjealousy/HOUTEN%20JALOEZIE/SMOKEY%20BAMBOO/BAMBOE-JALOEZIE_5077_GRANITE_a78919d8-1082.jpeg', textureUrl: 'https://storage.googleapis.com/mrjealousy/HOUTEN%20JALOEZIE/SMOKEY%20BAMBOO/BAMBOE-JALOEZIE_5077_GRANITE_a78919d8-1082.jpeg' },
     { name: 'Deep Zwart',      hex: '#080808', material: 'Hout', sampleUrl: 'https://storage.googleapis.com/mrjealousy/HOUTEN%20JALOEZIE/DEEP%20ZWART/HOUTEN-JALOEZIE_BLACK_04686c36-330d-4935-.jpeg', textureUrl: _HOUT('HOUTENJALOEZIEBLACK.png') },
   ],
 };
