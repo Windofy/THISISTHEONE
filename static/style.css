@@ -570,8 +570,8 @@ img {
   bottom: unset;
   z-index: 5;
   background: rgba(255, 255, 255, 0.45);
-  backdrop-filter: blur(14px) saturate(160%);
   -webkit-backdrop-filter: blur(14px) saturate(160%);
+  backdrop-filter: blur(14px) saturate(160%);
   color: var(--text-dark);
   font-family: var(--font-body);
   font-size: 10px;
@@ -612,8 +612,8 @@ img {
   gap: 12px;
   padding: 16px 20px;
   background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(14px) saturate(160%);
   -webkit-backdrop-filter: blur(14px) saturate(160%);
+  backdrop-filter: blur(14px) saturate(160%);
   flex-shrink: 0;
   border-top: 1px solid rgba(255, 255, 255, 0.45);
 }
@@ -629,8 +629,8 @@ img {
   padding: 6px 12px;
   gap: 8px;
   background: rgba(255, 255, 255, 0.35);
-  backdrop-filter: blur(16px) saturate(160%);
   -webkit-backdrop-filter: blur(16px) saturate(160%);
+  backdrop-filter: blur(16px) saturate(160%);
   border-top: 1px solid rgba(255, 255, 255, 0.30);
   justify-content: flex-end;
 }
@@ -1335,8 +1335,8 @@ img {
   align-items: center;
   justify-content: center;
   background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   z-index: 50;
   border-radius: var(--radius-card);
 }
@@ -1378,6 +1378,12 @@ img {
   transform-box: fill-box;
   transform-origin: center;
 }
+
+/* ── UTILITY (replaces inline styles) ── */
+.result-header-left img { width: 40px; height: 40px; object-fit: contain; }
+.ba-handle img          { width: 24px; height: 24px; object-fit: contain; display: block; }
+.result-actions--cta    { padding: 10px 0 0 !important; background: transparent !important; }
+.btn-outline--pink      { padding: 8px 12px; border-color: var(--pink-border); color: var(--text-dark); background: var(--pink-light); }
 
 /* ── KEYFRAMES ── */
 
