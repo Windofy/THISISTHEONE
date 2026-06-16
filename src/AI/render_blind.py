@@ -43,14 +43,15 @@ def render_blind_panel(
       width_px, height_px : output canvas size (will match SAM2 bounds later)
       config              : {colorName, colorHex, productType}
       state               : "Geheel uitgerold" (closed) | "Tot de helft" (45° tilt)
-      extra               : {slatWidth: "25mm"|"50mm", ladderTape: bool, lighting: ...}
+      extra               : {slatWidth: "25mm"|"50mm"|"65mm", ladderTape: bool, lighting: ...}
       window_height_mm    : real-world window height for mm→px scale
 
     Returns:
       PIL.Image (RGBA), transparent everywhere except the blind.
     """
     color_hex   = config.get("colorHex") or "#E8E0D5"
-    slat_w_mm   = 25.0 if extra.get("slatWidth", "50mm") == "25mm" else 50.0
+    _sw = extra.get("slatWidth", "50mm")
+    slat_w_mm   = 25.0 if _sw == "25mm" else 65.0 if _sw == "65mm" else 50.0
     has_tape    = bool(extra.get("ladderTape", True))
     is_wood     = "houten" in (config.get("productType", "")).lower()
 

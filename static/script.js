@@ -831,8 +831,9 @@ async function generatePreview() {
 // ── OPTION CONSTRAINTS ─────────────────────────────────────────
 // Enforces product-level rules after every color selection or option change.
 // Rules:
-//   1. 25mm slats are only available for Aluminium — disable for Hout.
-//   2. Aluminium 25mm + Ladderband is technically impossible — force Ladderkoord.
+//   1. Hout: only 50mm + 65mm — hide 25mm and show 65mm.
+//   2. Aluminium: only 25mm + 50mm — hide 65mm.
+//   3. Aluminium 25mm + Ladderband is technically impossible — force Ladderkoord.
 
 let _toastTimer = null;
 
@@ -863,17 +864,25 @@ function updateOptionConstraints() {
   if (!lamelGroup || !ladderGroup) return;
 
   const item25mm = lamelGroup.querySelector('[data-value="25mm"]');
+  const item65mm = lamelGroup.querySelector('[data-value="65mm"]');
 
   if (isHout) {
-    // 25mm unavailable for wood — disable option and force 50mm
-    if (item25mm) item25mm.classList.add('disabled');
+    // Hout: show 50mm + 65mm, hide 25mm
+    if (item25mm) item25mm.classList.add('hidden');
+    if (item65mm) item65mm.classList.remove('hidden');
+    // If 25mm was selected, fall back to 50mm
     if (getSelected('rg-lamel') === '25mm') {
       _setRadioSelected('rg-lamel', '50mm');
       showConstraintToast('25mm lamel is niet beschikbaar voor Houten Jaloezieën. Omgezet naar 50mm.');
     }
   } else {
-    // Aluminium — re-enable 25mm
-    if (item25mm) item25mm.classList.remove('disabled');
+    // Aluminium: show 25mm + 50mm, hide 65mm
+    if (item25mm) item25mm.classList.remove('hidden');
+    if (item65mm) { item65mm.classList.add('hidden'); item65mm.classList.remove('selected'); }
+    // If 65mm was selected (switched from Hout), fall back to 50mm
+    if (getSelected('rg-lamel') === '65mm') {
+      _setRadioSelected('rg-lamel', '50mm');
+    }
 
     // Block: Aluminium 25mm + Ladderband
     if (getSelected('rg-lamel') === '25mm' && getSelected('rg-ladder') === 'Ladderband') {

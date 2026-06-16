@@ -161,6 +161,12 @@ def _build_prompt(config: dict, state: str, mounting: Optional[str], extra_optio
             "(approximately twice as many slats as standard 50mm blinds). "
             "Each individual slat must be visibly thin and crisp."
         )
+    elif _slat_w == "65mm":
+        slat_desc = (
+            "with wide 65mm slats — render with LOW horizontal stripe density "
+            "(fewer, clearly wider slats than standard 50mm blinds). "
+            "Each individual slat must be visibly wide and prominent."
+        )
     elif _slat_w:
         slat_desc = f"with {_slat_w} wide horizontal slats"
     else:
@@ -190,6 +196,10 @@ def _build_prompt(config: dict, state: str, mounting: Optional[str], extra_optio
         + (
             "\n      - This means VERY HIGH density — approximately twice as many slats as a 50mm blind."
             if _slat_w == "25mm" else ""
+        )
+        + (
+            "\n      - This means LOW density — fewer slats, each one noticeably wider than a standard 50mm blind."
+            if _slat_w == "65mm" else ""
         )
     ) if _slat_w else ""
     return f"""
